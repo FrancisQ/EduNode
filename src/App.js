@@ -1,17 +1,13 @@
 import './App.css';
 import React, { useState } from 'react'
 
-const Button = ({ handleClick, text }) => {
-  return (
-    <button onClick={handleClick}>{text}</button>
-  )
-}
+//COMPACT COMPONENTS
+const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
+const Stat = ({ reviewText, number }) => <p>{reviewText} {number}</p>
 
-const Stat = ({ reviewText, number }) => {
-  return <p>{reviewText} {number}</p>
-}
 
 const App = () => {
+  //STATES
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
@@ -20,9 +16,18 @@ const App = () => {
   const handleNeutral = () => setNeutral(neutral + 1)
   const handleBad = () => setBad(bad + 1)
 
-  const getCount = (reviewType) => reviewType
+  //CALCS
+  let total = good + neutral + bad
+  let avg = good - bad
 
-  console.log({ good })
+  const calcPercent = () => {
+    if (total === 0)
+      return 0
+    return good / total
+  }
+
+  let percent = calcPercent() + "%"
+
   return (
     <div className="wrapper">
       <h1>Give Feedback</h1>
@@ -32,9 +37,13 @@ const App = () => {
       <br />
 
       <h1>Statistics</h1>
-      <Stat reviewText="Good" number={getCount(good)}></Stat>
-      <Stat reviewText="Neutral" number={getCount(neutral)}></Stat>
-      <Stat reviewText="Bad" number={getCount(bad)}></Stat>
+      <Stat reviewText="Good" number={good}></Stat>
+      <Stat reviewText="Neutral" number={neutral}></Stat>
+      <Stat reviewText="Bad" number={bad}></Stat>
+      <br />
+      <Stat reviewText="All" number={total}></Stat>
+      <Stat reviewText="Average" number={avg}></Stat>
+      <Stat reviewText="Positive" number={percent}></Stat>
     </div>
 
   )
