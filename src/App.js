@@ -1,99 +1,43 @@
 import './App.css';
 import React, { useState } from 'react'
 
+const Button = ({ handleClick, text }) => {
+  return (
+    <button onClick={handleClick}>{text}</button>
+  )
+}
+
+const Stat = ({ reviewText, number }) => {
+  return <p>{reviewText} {number}</p>
+}
+
 const App = () => {
-  const [counter, setCounter] = useState(0)
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
 
-  const increaseByOne = () => setCounter(counter + 1)
-  const decreaseByOne = () => setCounter(counter - 1)
-  const setToZero = () => setCounter(0)
+  const handleGood = () => setGood(good + 1)
+  const handleNeutral = () => setNeutral(neutral + 1)
+  const handleBad = () => setBad(bad + 1)
 
+  const getCount = (reviewType) => reviewType
+
+  console.log({ good })
   return (
-    <div>
-      <Display counter={counter} />
-      <Button
-        onClick={increaseByOne}
-        text='plus'
-      />
-      <Button
-        onClick={setToZero}
-        text='zero'
-      />
-      <Button
-        onClick={decreaseByOne}
-        text='minus'
-      />
+    <div className="wrapper">
+      <h1>Give Feedback</h1>
+      <Button handleClick={handleGood} text="Good"></Button>
+      <Button handleClick={handleNeutral} text="Neutral"></Button>
+      <Button handleClick={handleBad} text="Bad"></Button>
+      <br />
+
+      <h1>Statistics</h1>
+      <Stat reviewText="Good" number={getCount(good)}></Stat>
+      <Stat reviewText="Neutral" number={getCount(neutral)}></Stat>
+      <Stat reviewText="Bad" number={getCount(bad)}></Stat>
     </div>
+
   )
 }
-
-const Display = ({ counter }) => <h1>{counter}</h1>
-const Button = ({ onClick, text }) => (
-  <button onClick={onClick}>
-    {text}
-  </button>
-)
-
-
-// Section 1.3 - 1.5 commented below for simplicity
-/* 
-const Header = (props) => (
-  <h1>{props.course.name}</h1>
-)
-const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercise: 10
-      },
-      {
-        name: "Using props to pass data",
-        exercise: 7
-      },
-      {
-        name: "State of a component",
-        exercise: 14
-      }
-    ]
-  }
-
-  return (
-    <div>
-      <Header course={course} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
-  )
-}
-
-
-
-const Content = (props) => (
-  <div>
-    <Part name={props.parts[0].name} exercise={props.parts[0].exercise} />
-    <Part name={props.parts[1].name} exercise={props.parts[1].exercise} />
-    <Part name={props.parts[2].name} exercise={props.parts[2].exercise} />
-  </div >
-)
-
-const Part = (props) => (
-  <p>{props.name} - {props.exercise} exercises</p>
-)
-
-const Total = (props) => {
-
-  let total = 0
-  props.parts.forEach(element => {
-    total += element.exercise
-  });
-
-  return (
-    <p> Total number of exercises {total} </p>
-  )
-
-}
-*/
 
 export default App;
