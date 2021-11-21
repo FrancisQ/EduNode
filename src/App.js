@@ -1,9 +1,38 @@
 import './App.css';
 import React, { useState } from 'react'
 
-//COMPACT COMPONENTS
+//Sub - COMPONENTS
 const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
-const Stat = ({ reviewText, number }) => <p>{reviewText} {number}</p>
+const Stat = ({ reviewText, number }) => <p>{reviewText}: {number}</p>
+const StatWrapper = ({ good, neutral, bad }) => {
+
+  //CALCS
+  let total = good + neutral + bad
+  let avg = good - bad
+  const calcPercent = () => {
+    if (total === 0)
+      return 0
+    return good / total
+  }
+
+  let percent = calcPercent() + "%"
+
+  if (total === 0) {
+    return <p>No Feedback Given</p>
+  } else {
+    return (
+      <>
+        <Stat reviewText="Good" number={good}></Stat>
+        <Stat reviewText="Neutral" number={neutral}></Stat>
+        <Stat reviewText="Bad" number={bad}></Stat>
+        <br />
+        <Stat reviewText="All" number={total}></Stat>
+        <Stat reviewText="Average" number={avg}></Stat>
+        <Stat reviewText="Positive" number={percent}></Stat>
+      </>
+    )
+  }
+}
 
 
 const App = () => {
@@ -16,18 +45,6 @@ const App = () => {
   const handleNeutral = () => setNeutral(neutral + 1)
   const handleBad = () => setBad(bad + 1)
 
-  //CALCS
-  let total = good + neutral + bad
-  let avg = good - bad
-
-  const calcPercent = () => {
-    if (total === 0)
-      return 0
-    return good / total
-  }
-
-  let percent = calcPercent() + "%"
-
   return (
     <div className="wrapper">
       <h1>Give Feedback</h1>
@@ -37,13 +54,7 @@ const App = () => {
       <br />
 
       <h1>Statistics</h1>
-      <Stat reviewText="Good" number={good}></Stat>
-      <Stat reviewText="Neutral" number={neutral}></Stat>
-      <Stat reviewText="Bad" number={bad}></Stat>
-      <br />
-      <Stat reviewText="All" number={total}></Stat>
-      <Stat reviewText="Average" number={avg}></Stat>
-      <Stat reviewText="Positive" number={percent}></Stat>
+      <StatWrapper good={good} neutral={neutral} bad={bad}></StatWrapper>
     </div>
 
   )
