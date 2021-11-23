@@ -45,22 +45,40 @@ const Anecdotes = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients'
   ]
 
+  const [votesArray, setVotesArray] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [selected, setSelected] = useState(0)
-  const handler = () => {
+  const handleGenerate = () => {
     setSelected(Math.floor(Math.random() * anecdotes.length))
-    console.log(selected)
+    console.log("selected:", selected)
+  }
+  const handleVote = () => {
+    let temp = [...votesArray]
+    temp[selected]++
+    setVotesArray(temp)
+    console.log("selected:", selected)
+    console.log(votesArray)
+    handleGenerate()
+    topVote();
+  }
+
+  const topVote = () => {
+    let topValue = Math.max(...votesArray)
+    let topValueIndex = votesArray.indexOf(topValue)
+    return <p>{anecdotes[topValueIndex]} <br /> has {topValue} votes</p>
   }
 
 
-  // Refresh state resets clicked to false???
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-      <button onClick={handler}>Generate a Random Quote</button>
+      <p>has {votesArray[selected]} votes</p>
+      <Button handleClick={handleVote} text="Vote!"></Button>
+      <Button handleClick={handleGenerate} text="Generate a Random Quote"></Button>
+      <h1>Most Voted</h1>
+      <p>{topVote()}</p>
     </div>
   )
-
 }
 
 
