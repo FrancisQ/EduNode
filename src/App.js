@@ -49,14 +49,12 @@ const Anecdotes = () => {
   const [selected, setSelected] = useState(0)
   const handleGenerate = () => {
     setSelected(Math.floor(Math.random() * anecdotes.length))
-    console.log("selected:", selected)
   }
+
   const handleVote = () => {
     let temp = [...votesArray]
     temp[selected]++
     setVotesArray(temp)
-    console.log("selected:", selected)
-    console.log(votesArray)
     handleGenerate()
     topVote();
   }
@@ -66,8 +64,6 @@ const Anecdotes = () => {
     let topValueIndex = votesArray.indexOf(topValue)
     return <p>{anecdotes[topValueIndex]} <br /> has {topValue} votes</p>
   }
-
-
 
   return (
     <div>
