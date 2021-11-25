@@ -9,11 +9,17 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    console.log("button Clicked!", event.target)
-    const newPersonObject = {
-      name: newName
+    const nameExists = persons.find(person => person.name === newName)
+    console.log(nameExists)
+    if (nameExists !== undefined)
+      alert(`Name ${newName} Already Exists, try another`)
+    else {
+      const newPersonObject = {
+        name: newName
+      }
+      setPersons(persons.concat(newPersonObject))
     }
-    setPersons(persons.concat(newPersonObject))
+
     setNewName('')
   }
   const updateName = (event) => {
