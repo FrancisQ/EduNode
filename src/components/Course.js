@@ -2,11 +2,13 @@ import React from 'react'
 import Header from './Header'
 import Content from './Content'
 
-const Course = ({ course }) => (
-    <div>
-        <Header name={course.name}></Header>
-        <Content parts={course.parts}></Content>
-        <br />
-    </div>
-)
+const Course = ({ course }) => {
+    return (
+        <div>
+            <Header name={course.name}></Header>
+            <Content parts={course.parts}></Content>
+        </div>
+
+    )
+}
 export default Course

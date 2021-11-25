@@ -2,7 +2,7 @@ import React from 'react'
 
 const Header = ({ name }) => {
     return (
-        <h3>{name}</h3>
+        <h1>{name}</h1>
     )
 }
 export default Header
