@@ -31,13 +31,17 @@ const App = () => {
   return (
     < div class="wrapper" >
       <input value={search} onChange={searchHandler} />
-      <Results length={shortlist.length} results={shortlist} search={search}></Results>
+      <Results length={shortlist.length} results={shortlist} search={search} handleShow={searchHandler}></Results>
 
     </div >
   )
 }
 
-const Results = ({ length, results, search }) => {
+const Results = ({ length, results, search, handleShow }) => {
+
+
+
+
   if (search === 'Search' || search === '')
     return <p>Use search to find country</p>
   else if (length > 10)
@@ -53,21 +57,19 @@ const Results = ({ length, results, search }) => {
         <ul>
           {Object.entries(country.languages).map(([key, value]) => <li key={key}>{value}</li>)}
         </ul>
-        <img src={country.flags.png} height="100px" />
+        <img alt="flag" src={country.flags.png} height="100px" />
       </div >
     )
-
   } else if (length > 0) {
     return (
       <ul>
         {results.map(country => (
-          <li key={country.tld}>{country.name.common}</li>
+          <li key={country.tld}>{country.name.common} <button value={country.name.common} onClick={handleShow}>Show</button></li>
         ))}
       </ul>
     )
   } else
     return <p>Nothing Found, try again</p>
-
 }
 
 export default App
