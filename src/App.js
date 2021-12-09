@@ -29,18 +29,14 @@ const App = () => {
   }
 
   return (
-    < div class="wrapper" >
+    < div className="wrapper" >
       <input value={search} onChange={searchHandler} />
       <Results length={shortlist.length} results={shortlist} search={search} handleShow={searchHandler}></Results>
-
     </div >
   )
 }
 
 const Results = ({ length, results, search, handleShow }) => {
-
-
-
 
   if (search === 'Search' || search === '')
     return <p>Use search to find country</p>
@@ -58,6 +54,7 @@ const Results = ({ length, results, search, handleShow }) => {
           {Object.entries(country.languages).map(([key, value]) => <li key={key}>{value}</li>)}
         </ul>
         <img alt="flag" src={country.flags.png} height="100px" />
+        <Weather capital={country.capital}></Weather>
       </div >
     )
   } else if (length > 0) {
@@ -70,6 +67,33 @@ const Results = ({ length, results, search, handleShow }) => {
     )
   } else
     return <p>Nothing Found, try again</p>
+}
+
+const Weather = (props) => {
+  const capital = props.capital
+  const key = process.env.REACT_APP_WEATHER_CODE
+  const [temp, setTemp] = useState()
+  const [icon, setIcon] = useState()
+  const [wind, setWind] = useState()
+
+  useEffect(() => {
+    axios
+      .get(`http://api.weatherstack.com/current?access_key=${key}&query=${capital}`)
+      .then(response => {
+        setTemp(response.data.current.temperature)
+        setIcon(response.data.current.weather_icons[0])
+        setWind(response.data.current.wind_speed)
+      })
+  }, [])
+
+  return (
+    <div>
+      <h2> Weather in {capital}</h2>
+      <p>Temperature: {temp}</p>
+      <img src={icon} />
+      <p> Wind: {wind}</p>
+    </div>
+  )
 }
 
 export default App
