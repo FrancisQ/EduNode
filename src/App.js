@@ -4,6 +4,7 @@ import Search from './components/Search'
 import Results from './components/Results'
 import PersonForm from './components/PersonForm'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,6 +12,8 @@ const App = () => {
   const [newPhone, setNewPhone] = useState('Your number?')
   const [newSearch, setNewSearch] = useState('Search')
   const [newResult, setNewResult] = useState([])
+  const [notificationMsg, setNotificationMsg] = useState(null);
+  const [errorStyle, setErrorStyle] = useState(true);
 
   //get list of names from backend
   useEffect(() => {
@@ -53,10 +56,22 @@ const App = () => {
       personService
         .create(newPersonObject)
         .then(returnedPerson => {
-          console.log(returnedPerson)
           setPersons(persons.concat(returnedPerson))
           setNewResult(newResult.concat(returnedPerson))
+          setNotificationMsg(`Note '${returnedPerson.name}' was successfully added`)
+          setErrorStyle(false)
+          setTimeout(() => {
+            setNotificationMsg(null)
+          }, 5000)
         })
+        .catch(error => {
+          setNotificationMsg(`An error occured adding '${newPersonObject.name}'`)
+          setErrorStyle(true)
+          setTimeout(() => {
+            setNotificationMsg(null)
+          }, 5000)
+        }
+        )
     }
     setNewName('')
     setNewPhone('')
@@ -90,7 +105,22 @@ const App = () => {
         .then(confirmation => {
           setPersons(persons.filter(listItem => listItem.id !== person.id))
           setNewResult(persons.filter(listItem => listItem.id !== person.id))
+          setNotificationMsg(`Note '${person.name}' was removed from server`)
+          setErrorStyle(false)
+          setTimeout(() => {
+            setNotificationMsg(null)
+          }, 5000)
         })
+        .catch(error => {
+          setNotificationMsg(`Note '${person.name}' was already removed from server`)
+          setErrorStyle(true)
+          setTimeout(() => {
+            setNotificationMsg(null)
+          }, 5000)
+          setPersons(persons.filter(listItem => listItem.id !== person.id))
+          setNewResult(newResult.filter(listItem => listItem.id !== person.id))
+        })
+
     }
   }
 
@@ -98,6 +128,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMsg} style={errorStyle} />
       <Search
         value={newSearch}
         handleChange={searchResults}> </Search>
